@@ -17,8 +17,8 @@ class StockTradingEnv(gym.Env):
     """A stock trading environment for OpenAI Gym"""
     metadata = {'render.modes': ['human']}
 
-    def ___init___(self, df):
-        super(StockTradingEnv, self).___init___()
+    def __init__(self, df):
+        super(StockTradingEnv, self).__init__()
         self.df = df
         self.reward_range = (0, MAX_ACCOUNT_BALANCE)
 
@@ -53,7 +53,7 @@ class StockTradingEnv(gym.Env):
         #Set the current price to a random price withhin the time step
         current_price = random.uniform(
             self.df.loc[self.current_step, "Open"],
-            self.df.loc[sel.current_step, "Close"]
+            self.df.loc[self.current_step, "Close"]
         )
 
         action_type = action[0]
@@ -70,7 +70,7 @@ class StockTradingEnv(gym.Env):
             self.cost_basis = (prev_cost + additional_cost) / (self.shares_held + shares_bought)
             self.shares_held += shares_bought
 
-        elif actionType < 2:
+        elif action_type < 2:
             #Sell amount % of shares held
             shares_sold = self.shares_held * amount
             self.balance += shares_sold * current_price
@@ -81,7 +81,7 @@ class StockTradingEnv(gym.Env):
         self.net_worth = self.balance + self.shares_held * current_price
 
         if self.net_worth > self.max_net_worth:
-            self.max_net_worth = net_worth
+            self.max_net_worth = self.net_worth
         
         if self.shares_held == 0:
             self.cost_basis = 0
